@@ -1,45 +1,9 @@
 package cxfmtreadable
 
 import (
-	"strconv"
 	"testing"
 	"time"
 )
-
-func BenchmarkAppendBytes(b *testing.B) {
-	var buf []byte
-	sizes := []uint64{500, 1024, 1048576, 1073741824, 1099511627776} // Various sizes: 500B, 1KB, 1MB, 1GB, 1TB
-	for _, size := range sizes {
-		b.Run("Size "+strconv.FormatUint(size, 10), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				buf = buf[:0]
-				buf = AppendBytes(buf, size)
-			}
-			b.ReportAllocs()
-		})
-	}
-}
-
-func BenchmarkFormatDuration(b *testing.B) {
-	var buf []byte
-	durations := []time.Duration{
-		500 * time.Nanosecond,
-		1500 * time.Microsecond,
-		2500 * time.Millisecond,
-		120 * time.Second,
-		90 * time.Minute,
-		48 * time.Hour,
-	} // Various durations
-	for _, d := range durations {
-		b.Run("Duration "+d.String(), func(b *testing.B) {
-			for i := 0; i < b.N; i++ {
-				buf = buf[:0]
-				buf = FormatDuration(buf, d)
-			}
-			b.ReportAllocs()
-		})
-	}
-}
 
 func TestAppendBytes(t *testing.T) {
 	tests := []struct {
