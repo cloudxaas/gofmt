@@ -48,3 +48,49 @@ func FormatDuration(buf []byte, d time.Duration) []byte {
 	}
 	return buf
 }
+
+
+// FormatNumberCompact formats numbers into a compact form using 'k' for thousand, 'M' for million, etc.,
+// aiming for zero heap allocations. The buffer must be pre-allocated with enough space.
+func FormatNumberCompact(num int64, buf []byte) []byte {
+	if num == 0 {
+		return append(buf, '0')
+	}
+
+	// Determine the scale and suffix
+	suffix := ""
+	value := float64(num)
+	if num < 0 {
+		value = -value // Make positive for logarithmic calculation
+	}
+
+	switch {
+	case value < 1000:
+		return strconv.AppendInt(buf, num, 10) // No suffix needed for < 1000
+	case value < 1_000_000:
+		value /= 1000
+		suffix = "k"
+	case value < 1_000_000_000:
+		value /= 1_000_000
+		suffix = "M"
+	default:
+		value /= 1_000_000_000
+		suffix = "B"
+	}
+
+	// Adjust the number to one decimal place and format
+	value = math.Round(value*10) / 10
+	startIndex := len(buf)
+	buf = strconv.AppendFloat(buf, value, 'f', 1, 64)
+
+	// Remove unnecessary decimal and zero if integer value
+	if buf[len(buf)-2] == '.' && buf[len(buf)-1] == '0' {
+		buf = buf[:len(buf)-2] // Remove trailing ".0"
+	}
+
+	// Append the suffix
+	buf = append(buf, suffix...)
+
+	return buf
+}
+
