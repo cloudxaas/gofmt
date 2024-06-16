@@ -2,7 +2,6 @@ package cxfmtreadable
 
 import (
 	"strconv"
-	"time"
 )
 
 // AppendBytes converts bytes to a human-readable string with units and appends to the provided buffer
@@ -17,7 +16,9 @@ func AppendBytes(buf []byte, b uint64) []byte {
 		exp++
 	}
 	buf = strconv.AppendFloat(buf, float64(b)/float64(div), 'f', 1, 64)
-	return append(buf, "KMGTPE"[exp], 'B')
+	buf = append(buf, "KMGTPE"[exp])
+	buf = append(buf, 'B')
+	return buf
 }
 
 // FormatDuration formats a time.Duration into a human-readable string without heap allocations.
