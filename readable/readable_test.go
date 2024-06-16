@@ -1,8 +1,8 @@
 package cxfmtreadable
 
 import (
+	"strconv"
 	"testing"
-"strconv"
 	"time"
 )
 
