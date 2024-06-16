@@ -37,13 +37,13 @@ func FormatDuration(buf []byte, d time.Duration) []byte {
 		buf = strconv.AppendInt(buf, d.Milliseconds(), 10)
 		buf = append(buf, "ms"...)
 	case d < time.Minute:
-		buf = strconv.AppendInt(buf, int64(d.Seconds()), 10)
+		buf = strconv.AppendFloat(buf, d.Seconds(), 'f', 0, 64)
 		buf = append(buf, "s"...)
 	case d < time.Hour:
-		buf = strconv.AppendInt(buf, int64(d.Minutes()), 10)
+		buf = strconv.AppendFloat(buf, d.Minutes(), 'f', 0, 64)
 		buf = append(buf, "m"...)
 	default:
-		buf = strconv.AppendInt(buf, int64(d.Hours()), 10)
+		buf = strconv.AppendFloat(buf, d.Hours(), 'f', 0, 64)
 		buf = append(buf, "h"...)
 	}
 	return buf
