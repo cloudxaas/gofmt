@@ -1,6 +1,7 @@
 package cxfmtreadable
 
 import (
+	"time"
 	"strconv"
 )
 
