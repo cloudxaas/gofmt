@@ -1,6 +1,7 @@
 package cxfmtreadable
 
 import (
+	"math"
 	"strconv"
 	"time"
 )
@@ -80,7 +81,6 @@ func FormatNumberCompact(num int64, buf []byte) []byte {
 
 	// Adjust the number to one decimal place and format
 	value = math.Round(value*10) / 10
-	startIndex := len(buf)
 	buf = strconv.AppendFloat(buf, value, 'f', 1, 64)
 
 	// Remove unnecessary decimal and zero if integer value
@@ -93,4 +93,3 @@ func FormatNumberCompact(num int64, buf []byte) []byte {
 
 	return buf
 }
-
